@@ -336,7 +336,6 @@ class Knight(Game_Piece):
             else:
                 if not self.check_color(row+1, column-2, pieces_on_board):
                     self._potential_position[chess_board[row + 1][column - 2]] = upOne_twoLeft
-                row = 9
 
         if row+1 < 8 and column+2 < 8:  # Up one, Two Right
             upOne_twoRight = Position(chess_board[row+1][column+2], row+1, column+2)
@@ -345,7 +344,6 @@ class Knight(Game_Piece):
             else:
                 if not self.check_color(row+1, column+2, pieces_on_board):
                     self._potential_position[chess_board[row + 1][column + 2]] = upOne_twoRight
-                row = 9
 
         if row+2 < 8 and column+1 < 8:  # Up Two, One Right
             upTwo_oneRight = Position(chess_board[row+2][column+1], row+2, column+1)
@@ -354,7 +352,6 @@ class Knight(Game_Piece):
             else:
                 if not self.check_color(row+2, column+1, pieces_on_board):
                     self._potential_position[chess_board[row + 2][column + 1]] = upTwo_oneRight
-                row = 9
 
         if row+2 < 8 and column-1 < 8:  # Up Two, One Left
             upTwo_oneLeft = Position(chess_board[row+2][column-1], row+2, column-1)
@@ -498,8 +495,8 @@ class ChessVar:
             self._empty_chess_board[row][column] = name
 
     def update_game_state(self):
-        """Updates the _game_state depending on conditions, such as if the move is BLACK, and if there is a piece is in
-        the last row. If the move is not BLACK, the game cannot be finished. If the move is BLACK, check for the piece
+        """Updates the _game_state depending on conditions, such as if the move is BLACK, and if King is in
+        the last row. If the move is not BLACK, the game cannot be finished. If the move is BLACK, check for King
         in the last row, and then determine who won based on color"""
         end_row = ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"]
         white_piece = None
@@ -508,11 +505,12 @@ class ChessVar:
         if self._colors_turn == "BLACK":  # Game ends on blacks move
             for row_8 in end_row:  # Last move in the game
                 if row_8 in self._game_pieces:  # If there is a piece in this row
-                    color = self._game_pieces[row_8].get_color()  # Checks for the color of the piece that is in this row
-                    if color == "BLACK":
-                        black_piece = self._game_pieces[row_8]
-                    elif color == "WHITE":
-                        white_piece = self._game_pieces[row_8]
+                    if self._game_pieces[row_8] is isinstance(self._game_pieces[row_8], King):
+                        color = self._game_pieces[row_8].get_color()  # Checks for the color of the piece that is in this row
+                        if color == "BLACK":
+                            black_piece = self._game_pieces[row_8]
+                        elif color == "WHITE":
+                            white_piece = self._game_pieces[row_8]
 
             if black_piece is not None and white_piece is not None:
                 self._game_state = "TIE"
