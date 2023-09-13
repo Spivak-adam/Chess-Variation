@@ -630,7 +630,6 @@ class ChessVar:
                 else:
                     return False
             else:
-                print("Piece is not on board")
                 return False
         else:
             return False
