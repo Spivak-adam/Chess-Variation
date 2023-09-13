@@ -89,9 +89,9 @@ class Game_Piece:
 
 class King(Game_Piece):
     """An inherited class that represents the King pieces on the board. Calc_potential_positions looks for potential
-    positions going 1 space Up, Down, Left, Right.  If a piece is on the potential path for the current piece, it stops
-    looking through the board for new potential positions. If
-    it's the opposite color it adds the piece to the potential_position so that it can be taken off the board"""
+    positions going 1 space Up, Down, Left, Right, Up Right, Up Left, Down Left, and Down Right.  If a piece is on the
+    potential path for the current piece, it stops looking through the board for new potential positions. If it's the
+    opposite color it adds the piece to the potential_position so that it can be taken off the board."""
 
     def __init__(self, name, color):
         super().__init__(name, color)
@@ -106,7 +106,7 @@ class King(Game_Piece):
         column = position.get_column()
 
         # Checks if each move is within the limits of the board, and creates a position object for each move
-        if column - 1 >= 0:
+        if column - 1 >= 0:  # Left
             left = column - 1
             left_pos = Position(chess_board[row][left], row, left)
             if chess_board[row][left] not in game_pieces:
@@ -115,7 +115,7 @@ class King(Game_Piece):
                 if not self.check_color(row, left, pieces_on_board):
                     self._potential_position[chess_board[row][left]] = left_pos
 
-        if column + 1 < 8:
+        if column + 1 < 8:  # Right
             right = column + 1
             right_pos = Position(chess_board[row][right], row, right)
             if chess_board[row][right] not in game_pieces:
@@ -124,7 +124,7 @@ class King(Game_Piece):
                 if not self.check_color(row, right, pieces_on_board):
                     self._potential_position[chess_board[row][right]] = right_pos
 
-        if row - 1 >= 0:
+        if row - 1 >= 0:  # Down
             down = row - 1
             down_pos = Position(chess_board[down][column], down, column)
             if chess_board[down][column] not in game_pieces:
@@ -133,7 +133,7 @@ class King(Game_Piece):
                 if not self.check_color(down, column, pieces_on_board):
                     self._potential_position[chess_board[down][column]] = down_pos
 
-        if row + 1 < 8:
+        if row + 1 < 8:  # Up
             up = row + 1  # It's going up since A1 is at row 0
             up_pos = Position(chess_board[up][column], up, column)
             if chess_board[up][column] not in game_pieces:
@@ -141,6 +141,38 @@ class King(Game_Piece):
             elif chess_board[up][column] in game_pieces:
                 if not self.check_color(row, right, pieces_on_board):
                     self._potential_position[chess_board[row][right]] = up_pos
+
+        if row+1 < 8 and column+1 < 8:  # Up one, One Right
+            upOne_OneRight = Position(chess_board[row+1][column+1], row+1, column+1)
+            if chess_board[row+1][column+1] not in game_pieces:
+                self._potential_position[chess_board[row+1][column+1]] = upOne_OneRight
+            else:
+                if not self.check_color(row+1, column+1, pieces_on_board):
+                    self._potential_position[chess_board[row+1][column+1]] = upOne_OneRight
+
+        if row+1 < 8 and column-1 >= 0:  # Up one, One Left
+            upOne_OneLeft = Position(chess_board[row+1][column-1], row+1, column-1)
+            if chess_board[row+1][column-1] not in game_pieces:
+                self._potential_position[chess_board[row+1][column-1]] = upOne_OneLeft
+            else:
+                if not self.check_color(row+1, column-1, pieces_on_board):
+                    self._potential_position[chess_board[row+1][column-1]] = upOne_OneLeft
+
+        if row-1 >= 0 and column+1 < 8:  # Down one, One Right
+            downOne_OneRight = Position(chess_board[row-1][column+1], row-1, column+1)
+            if chess_board[row-1][column+1] not in game_pieces:
+                self._potential_position[chess_board[row-1][column+1]] = downOne_OneRight
+            else:
+                if not self.check_color(row-1, column+1, pieces_on_board):
+                    self._potential_position[chess_board[row-1][column+1]] = downOne_OneRight
+
+        if row-1 >= 0 and column-1 >= 0:  # Down one, One Left
+            downOne_OneLeft = Position(chess_board[row-1][column-1], row-1, column-1)
+            if chess_board[row-1][column-1] not in game_pieces:
+                self._potential_position[chess_board[row-1][column-1]] = downOne_OneLeft
+            else:
+                if not self.check_color(row-1, column-1, pieces_on_board):
+                    self._potential_position[chess_board[row-1][column-1]] = downOne_OneLeft
 
 
 class Bishop(Game_Piece):
@@ -170,7 +202,6 @@ class Bishop(Game_Piece):
                 if not self.check_color(row, column, pieces_on_board):
                     self._potential_position[chess_board[row][column]] = up_right
                 row = 8
-                column = 8
 
             row += 1
             column += 1
@@ -188,7 +219,6 @@ class Bishop(Game_Piece):
                 if not self.check_color(row, column, pieces_on_board):
                     self._potential_position[chess_board[row][column]] = down_right
                 row = -1
-                column = 8
 
             row -= 1
             column += 1
@@ -206,7 +236,6 @@ class Bishop(Game_Piece):
                 if not self.check_color(row, column, pieces_on_board):
                     self._potential_position[chess_board[row][column]] = down_left
                 row = -1
-                column = -1
 
             row -= 1
             column -= 1
@@ -223,7 +252,6 @@ class Bishop(Game_Piece):
                 # Stops calculating the potential positions if there is a piece blocking its path
                 if not self.check_color(row, column, pieces_on_board):
                     self._potential_position[chess_board[row][column]] = up_left
-                row = 8
                 column = -1
 
             row += 1
@@ -505,7 +533,7 @@ class ChessVar:
         if self._colors_turn == "BLACK":  # Game ends on blacks move
             for row_8 in end_row:  # Last move in the game
                 if row_8 in self._game_pieces:  # If there is a piece in this row
-                    if self._game_pieces[row_8] is isinstance(self._game_pieces[row_8], King):
+                    if self._game_pieces[row_8] is isinstance(self._game_pieces[row_8], King):  # If the piece in that row is a King
                         color = self._game_pieces[row_8].get_color()  # Checks for the color of the piece that is in this row
                         if color == "BLACK":
                             black_piece = self._game_pieces[row_8]
@@ -533,10 +561,6 @@ class ChessVar:
             current_position = current_pos[0].upper() + current_pos[1]  # Makes sure the call to change position is capital
             new_position = new_pos[0].upper() + new_pos[1]  # Makes sure the call to change position is capital
             pieces_on_board = self._game_pieces
-            
-            if self._game_pieces[current_position].get_color() != self._colors_turn:
-                print("Not the right Color")
-                return False
 
             if pieces_on_board[current_position] is isinstance(pieces_on_board[current_position], King):  # Checks if current piece is a king
                 for positions in pieces_on_board:  # checks if any pieces potential position will land on the same position as the kings new position
@@ -551,6 +575,9 @@ class ChessVar:
                         return False
 
             if current_position in pieces_on_board:  # If the current position is the position of a game piece
+                if self._game_pieces[current_position].get_color() != self._colors_turn:
+                    print("Not the right Color")
+                    return False
                 print("TEST 3")
                 pieces_on_board[current_position].calc_potential_position(pieces_on_board)  # Calculate the potential positions of that piece
                 potential_positions = pieces_on_board[current_position].get_potential_positions()  # Gets potential position dict
@@ -603,6 +630,7 @@ class ChessVar:
                 else:
                     return False
             else:
+                print("Piece is not on board")
                 return False
         else:
             return False
