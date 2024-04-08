@@ -52,14 +52,14 @@ class Game_Piece:
         self._position = None  # Will be a Position object
         self._potential_position = {}
         # [Row][Col]    Col:    0     1     2     3     4     5     6     7      Row:
-        self._chess_board = [["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"],  # 0
-                             ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],  # 1
-                             ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3"],  # 2
-                             ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],  # 3
-                             ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],  # 4
-                             ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],  # 5
-                             ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],  # 6
-                             ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"]]  # 7
+        self._chess_board = [["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"],  # 0
+                             ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],  # 1
+                             ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],  # 2
+                             ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],  # 3
+                             ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],  # 4
+                             ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H6"],  # 5
+                             ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],  # 6
+                             ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"]]  # 7
 
     def check_color(self, row, column, pieces_on_board):
         """Uses row and column to find key, and uses key in pieces_on_board to get the pieces color"""
@@ -390,7 +390,6 @@ class Knight(Game_Piece):
                     self._potential_position[chess_board[row + 2][column - 1]] = upTwo_oneLeft
 
         if row-1 >= 0 and column+2 < 8:  # Down One, Two Right
-            print("ERROR HERE:", row-1, column+2)
             downOne_twoRight = Position(chess_board[row-1][column+2], row-1, column+2)
             if chess_board[row-1][column+2] not in game_pieces:
                 self._potential_position[chess_board[row-1][column+2]] = downOne_twoRight
@@ -431,14 +430,14 @@ class ChessVar:
     def __init__(self):
         """Initializes the chess board, the pieces on the board, whose turn it is , and the state of the game"""
         # [Row][Col]    Col:    0     1     2     3     4     5     6     7      Row:
-        self._chess_board = [["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"],  # 0
-                             ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],  # 1
-                             ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3"],  # 2
-                             ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],  # 3
-                             ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],  # 4
-                             ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],  # 5
-                             ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],  # 6
-                             ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"]]  # 7
+        self._chess_board = [["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"],  # 0
+                             ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],  # 1
+                             ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],  # 2
+                             ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],  # 3
+                             ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],  # 4
+                             ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H6"],  # 5
+                             ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],  # 6
+                             ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"]]  # 7
 
         # [Row][Col]          Col:     0      1      2      3      4      5      6      7      Row:
         self._empty_chess_board = [["   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "],  # 0
@@ -467,18 +466,18 @@ class ChessVar:
                              "F2": Knight("BK2", "BLACK")}
 
         # Sets the locations of the game pieces on the board
-        self._game_pieces["A1"].set_position(self._chess_board[0][0], 0, 0)
-        self._game_pieces["H1"].set_position(self._chess_board[0][7], 0, 7)
-        self._game_pieces["B1"].set_position(self._chess_board[0][1], 0, 1)
-        self._game_pieces["B2"].set_position(self._chess_board[1][1], 1, 1)
-        self._game_pieces["G1"].set_position(self._chess_board[0][6], 0, 6)
-        self._game_pieces["G2"].set_position(self._chess_board[1][6], 1, 6)
-        self._game_pieces["A2"].set_position(self._chess_board[1][0], 1, 0)
-        self._game_pieces["H2"].set_position(self._chess_board[1][7], 1, 7)
-        self._game_pieces["C1"].set_position(self._chess_board[0][2], 0, 2)
-        self._game_pieces["C2"].set_position(self._chess_board[1][2], 1, 2)
-        self._game_pieces["F1"].set_position(self._chess_board[0][5], 0, 5)
-        self._game_pieces["F2"].set_position(self._chess_board[1][5], 1, 5)
+        self._game_pieces["A1"].set_position(self._chess_board[7][0], 7, 0)
+        self._game_pieces["H1"].set_position(self._chess_board[7][7], 7, 7)
+        self._game_pieces["B1"].set_position(self._chess_board[7][1], 7, 1)
+        self._game_pieces["B2"].set_position(self._chess_board[6][1], 6, 1)
+        self._game_pieces["G1"].set_position(self._chess_board[7][6], 7, 6)
+        self._game_pieces["G2"].set_position(self._chess_board[6][6], 6, 6)
+        self._game_pieces["A2"].set_position(self._chess_board[6][0], 6, 0)
+        self._game_pieces["H2"].set_position(self._chess_board[6][7], 6, 7)
+        self._game_pieces["C1"].set_position(self._chess_board[7][2], 7, 2)
+        self._game_pieces["C2"].set_position(self._chess_board[6][2], 6, 2)
+        self._game_pieces["F1"].set_position(self._chess_board[7][5], 7, 5)
+        self._game_pieces["F2"].set_position(self._chess_board[6][5], 6, 5)
 
     def get_chess_board(self):
         return self._chess_board
@@ -565,43 +564,34 @@ class ChessVar:
             if pieces_on_board[current_position] is isinstance(pieces_on_board[current_position], King):  # Checks if current piece is a king
                 for positions in pieces_on_board:  # checks if any pieces potential position will land on the same position as the kings new position
                     pieces_on_board[positions].calc_potential_position()
-                    print("TEST 1, King cannot move")
                     if new_position in pieces_on_board[positions].get_potential_positions() and pieces_on_board[new_position].get_color() != pieces_on_board[positions].get_color():
                         return False
 
                 if new_position in pieces_on_board:  # Checks if new_position key is in pieces_on_board dict, if a piece is already there
-                    print("TEST 2")
                     if new_position in pieces_on_board[new_position].get_potential_positions():  #
                         return False
 
             if current_position in pieces_on_board:  # If the current position is the position of a game piece
                 if self._game_pieces[current_position].get_color() != self._colors_turn:
-                    print("Not the right Color")
                     return False
-                print("TEST 3")
                 pieces_on_board[current_position].calc_potential_position(pieces_on_board)  # Calculate the potential positions of that piece
                 potential_positions = pieces_on_board[current_position].get_potential_positions()  # Gets potential position dict
-                print("TEST 3.5, Pot Pos", potential_positions)
                 if new_position in potential_positions:  # If new_position is in potential_positions
                     row = 0
                     column = 0
                     while row < 8:
                         while column < 8:
                             if new_position == self._chess_board[row][column]:  # Finds the row and column of new_position
-                                print("TEST 4, new_position found")
                                 if new_position in pieces_on_board:  # Checks if another piece has this location
                                     # Checks if new_position will land on a king, if so it cannot make the move
                                     if pieces_on_board[new_position] is isinstance(pieces_on_board[current_position], King):
-                                        print("Test 5, Landed on a King")
                                         return False
                                     # Checks if colors do not match, and takes piece, Capture
                                     elif not pieces_on_board[current_position].check_color(row, column, pieces_on_board):
-                                        print("Test 6, Capture")
                                         set_new_pos = self._chess_board[row][column]
                                         pieces_on_board[current_position].set_position(set_new_pos, row, column)
                                         pieces_on_board[new_position] = pieces_on_board[current_position]
                                         pieces_on_board.pop(current_position)
-                                        print("TEST 6.5, PIECES ON BOARD", self._game_pieces)
                                         self.update_chess_board()
                                         self.update_game_state()
                                         self.change_color()
@@ -609,12 +599,10 @@ class ChessVar:
                                     else:
                                         return False
                                 else:  # If new pos is empty of piece
-                                    print("TEST 7, Move to an empty space on the board")
                                     set_new_pos = self._chess_board[row][column]
                                     pieces_on_board[current_position].set_position(set_new_pos, row, column)
                                     pieces_on_board[new_position] = pieces_on_board[current_position]
                                     pieces_on_board.pop(current_position)
-                                    print("TEST 7.5, PIECES ON BOARD", self._game_pieces)
                                     self.update_chess_board()
                                     self.update_game_state()
                                     self.change_color()
@@ -645,7 +633,7 @@ def main():
         print(game.get_color() + "'s turn")
         input_1 = str(input("What location would you like to move?\n"))
         input_2 = str(input("Where would you like to move it?\n"))
-        print(game.make_move(input_1, input_2))
+        game.make_move(input_1, input_2)
 
 
 if __name__ == "__main__":
