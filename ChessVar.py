@@ -560,20 +560,25 @@ class ChessVar:
             new_position = new_pos[0].upper() + new_pos[1]  # Makes sure the call to change position is capital
             pieces_on_board = self._game_pieces
 
-            if pieces_on_board[current_position] is isinstance(pieces_on_board[current_position], King):  # Checks if current piece is a king
-                for positions in pieces_on_board:  # checks if any pieces potential position will land on the same position as the kings new position
-                    pieces_on_board[positions].calc_potential_position()
-                    if new_position in pieces_on_board[positions].get_potential_positions() and pieces_on_board[new_position].get_color() != pieces_on_board[positions].get_color():
-                        return False
-
-                if new_position in pieces_on_board:  # Checks if new_position key is in pieces_on_board dict, if a piece is already there
-                    if new_position in pieces_on_board[new_position].get_potential_positions():  #
-                        return False
-
             if current_position in pieces_on_board:  # If the current position is the position of a game piece
                 if pieces_on_board[current_position].get_color() != self._colors_turn:
                     print("\nNot that colors turn!")
                     return False
+
+                #pieces_on_board[current_position].calc_potential_position()
+                #if new_position not in pieces_on_board[current_position].get_potential_position():
+                #    print("Current Piece cannot move to that position.")
+
+                if pieces_on_board[current_position] is isinstance(pieces_on_board[current_position], King):  # Checks if current piece is a king
+                    for positions in pieces_on_board:  # checks if any pieces potential position will land on the same position as the kings new position
+                        pieces_on_board[positions].calc_potential_position()
+                        if new_position in pieces_on_board[positions].get_potential_positions() and pieces_on_board[
+                            new_position].get_color() != pieces_on_board[positions].get_color():
+                            return False
+
+                    if new_position in pieces_on_board:  # Checks if new_position key is in pieces_on_board dict, if a piece is already there
+                        if new_position in pieces_on_board[new_position].get_potential_positions():  #
+                            return False
 
                 pieces_on_board[current_position].calc_potential_position(pieces_on_board)  # Calculate the potential positions of that piece
                 potential_positions = pieces_on_board[current_position].get_potential_positions()  # Gets potential position dict
@@ -619,6 +624,7 @@ class ChessVar:
                 else:
                     return False
             else:
+                print("\nThere is no piece to move at", current_position)
                 return False
         else:
             return False
