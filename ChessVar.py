@@ -556,8 +556,7 @@ class ChessVar:
          is on, checks if the current piece is putting the king into check or not. Returns true if move can be made, but
          returns false otherwise"""
         if self._game_state == "UNFINISHED":
-            print("UNFINISHED")
-            current_position = current_pos[0].upper() + current_pos[1]  # Makes sure the call to change position is capital
+            current_position = current_pos[0].upper() + current_pos[1]  # Makes sure the call to original position is capital
             new_position = new_pos[0].upper() + new_pos[1]  # Makes sure the call to change position is capital
             pieces_on_board = self._game_pieces
 
@@ -572,8 +571,10 @@ class ChessVar:
                         return False
 
             if current_position in pieces_on_board:  # If the current position is the position of a game piece
-                if self._game_pieces[current_position].get_color() != self._colors_turn:
+                if pieces_on_board[current_position].get_color() != self._colors_turn:
+                    print("\nNot that colors turn!")
                     return False
+
                 pieces_on_board[current_position].calc_potential_position(pieces_on_board)  # Calculate the potential positions of that piece
                 potential_positions = pieces_on_board[current_position].get_potential_positions()  # Gets potential position dict
                 if new_position in potential_positions:  # If new_position is in potential_positions
@@ -629,11 +630,12 @@ def main():
     game.update_chess_board()
 
     while game.get_game_state() == "UNFINISHED":
-        print(game.get_empty_chess_board(), "\n")
+        print(game.get_empty_chess_board())
         print(game.get_color() + "'s turn")
         input_1 = str(input("What location would you like to move?\n"))
         input_2 = str(input("Where would you like to move it?\n"))
         game.make_move(input_1, input_2)
+        print("\n")
 
 
 if __name__ == "__main__":
