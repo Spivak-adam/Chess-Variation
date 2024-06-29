@@ -565,13 +565,13 @@ class ChessVar:
                     print("\nNot that colors turn!")
                     return False
 
-                #pieces_on_board[current_position].calc_potential_position()
-                #if new_position not in pieces_on_board[current_position].get_potential_position():
-                #    print("Current Piece cannot move to that position.")
+                pieces_on_board[current_position].calc_potential_position(pieces_on_board)
+                if new_position not in pieces_on_board[current_position].get_potential_positions():
+                    print("\nCurrent Piece cannot move to that position.")
 
                 if pieces_on_board[current_position] is isinstance(pieces_on_board[current_position], King):  # Checks if current piece is a king
                     for positions in pieces_on_board:  # checks if any pieces potential position will land on the same position as the kings new position
-                        pieces_on_board[positions].calc_potential_position()
+                        pieces_on_board[positions].calc_potential_position(pieces_on_board)
                         if new_position in pieces_on_board[positions].get_potential_positions() and pieces_on_board[
                             new_position].get_color() != pieces_on_board[positions].get_color():
                             return False
